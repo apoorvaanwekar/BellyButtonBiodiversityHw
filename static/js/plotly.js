@@ -235,7 +235,6 @@ function gauge(level){
                 color: '850000'
             }
         }],
-        title: 'Belly Button Washing Frequency',
         xaxis: {zeroline:false, showticklabels:false,
                     showgrid: false, range: [-1, 1]},
         yaxis: {zeroline:false, showticklabels:false,
