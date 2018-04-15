@@ -21,30 +21,31 @@ def names():
 @app.route('/otu')
 def otu():
     # query db otu descriptions
-    otu_desc = session.query(OTU)
+    otu_query = session.query(OTU)
     # convert to list of values rather than list of tuples
-    otu_desc = {desc.otu_id: desc.lowest_taxonomic_unit_found for desc in otu_desc}
-    return jsonify(otu_desc)
+    otu_recs = {otu.otu_id: otu.lowest_taxonomic_unit_found for otu in otu_query}
+    return jsonify(otu_recs)
 
 # return metadata for a given sample
 @app.route('/metadata/<sample>')
 def metadata(sample):
     # remove prefix from sample name
-    sample = sample.lstrip('BB_')
+    sample_value = sample.lstrip('BB_')
     
+    meta_dict = {}
     # query db and filter for given sample
-    meta_data = (session
+    meta_query = (session
                 .query(Sample_Meta)
-                .filter(Sample_Meta.SAMPLEID == sample))
+                .filter(Sample_Meta.SAMPLEID == sample_value))
 
-    for result in meta_data:
+    for record in meta_query:
         meta_dict = {
-            'AGE': result.AGE,
-            'BBTYPE': result.BBTYPE,
-            'ETHNICITY': result.ETHNICITY,
-            'GENDER': result.GENDER,
-            'LOCATION': result.LOCATION,
-            'SAMPLEID': result.SAMPLEID,
+            'AGE': record.AGE,
+            'BBTYPE': record.BBTYPE,
+            'ETHNICITY': record.ETHNICITY,
+            'GENDER': record.GENDER,
+            'LOCATION': record.LOCATION,
+            'SAMPLEID': record.SAMPLEID,
         }
 
     return jsonify(meta_dict)
@@ -53,12 +54,12 @@ def metadata(sample):
 @app.route('/wfreq/<sample>')
 def wfreq(sample):
     # remove prefix from sample name
-    sample = sample.lstrip('BB_')
+    sample_value = sample.lstrip('BB_')
     
     # query db for wfreq and return as scalar
     wfreq_query = (session
             .query(Sample_Meta.WFREQ)
-            .filter(Sample_Meta.SAMPLEID == sample)
+            .filter(Sample_Meta.SAMPLEID == sample_value)
             .scalar())
 
     return jsonify(wfreq_query)
@@ -70,12 +71,12 @@ def sample(sample):
     sample_query = session.query(Sample.otu_id, getattr(Sample, sample))
 
     # sort sample values in descending order
-    sample_query = sorted(sample_query, key=lambda x: x[1], reverse=True)
+    sample_query_sorted = sorted(sample_query, key=lambda x: x[1], reverse=True)
 
     # create dict with lists of ids and sample values  
     sample_dict = {
-        'otu_ids': [otu[0] for otu in sample_query],
-        'sample_values': [otu[1] for otu in sample_query]
+        'otu_ids': [otu[0] for otu in sample_query_sorted],
+        'sample_values': [otu[1] for otu in sample_query_sorted]
     }
 
     return jsonify(sample_dict)

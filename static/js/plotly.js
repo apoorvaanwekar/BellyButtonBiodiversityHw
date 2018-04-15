@@ -32,21 +32,15 @@ function optionChanged(sample) {
 
     // api call to sample endpoint
     Plotly.d3.json(sampleURL, function(error, sampleResponse) {
-        if (error) {
-                console.warn(error);
-            };
             
         var allVals = sampleResponse.sample_values;
-        var allIDs = sampleResponse.otu_ids
+        var allIDs = sampleResponse.otu_ids;
         
         var pieValues = allVals.slice(0,10);
         var pieLabels = allIDs.slice(0,10);
         
         // api call to otu endpoint
         Plotly.d3.json(otuURL, function(error, otuResponse) {
-            if (error) {
-                console.warn(error);
-            }
     
             var allDescriptions = [];
             allIDs.forEach( function(data) {
@@ -99,25 +93,25 @@ function optionChanged(sample) {
                         Plotly.newPlot('pie', pieData);
                         Plotly.newPlot('bubble', bubbleData);
 
-                        Plotly.d3.select('#metadata').append('li').attr('id', 'age').text(`AGE: ${age}`)
-                        Plotly.d3.select('#metadata').append('li').attr('id', 'bbType').text(`BBTYPE: ${bbType}`)
-                        Plotly.d3.select('#metadata').append('li').attr('id', 'ethnicity').text(`ETHNICITY: ${ethnicity}`)
-                        Plotly.d3.select('#metadata').append('li').attr('id', 'gender').text(`GENDER: ${gender}`)
-                        Plotly.d3.select('#metadata').append('li').attr('id', 'location').text(`LOCATION: ${location}`)
-                        Plotly.d3.select('#metadata').append('li').attr('id', 'sampleID').text(`SAMPLEID: ${sampleID}`)
+                        Plotly.d3.select('#metadata').append('li').attr('id', 'age').text(`AGE: ${age}`);
+                        Plotly.d3.select('#metadata').append('li').attr('id', 'bbType').text(`BBTYPE: ${bbType}`);
+                        Plotly.d3.select('#metadata').append('li').attr('id', 'ethnicity').text(`ETHNICITY: ${ethnicity}`);
+                        Plotly.d3.select('#metadata').append('li').attr('id', 'gender').text(`GENDER: ${gender}`);
+                        Plotly.d3.select('#metadata').append('li').attr('id', 'location').text(`LOCATION: ${location}`);
+                        Plotly.d3.select('#metadata').append('li').attr('id', 'sampleID').text(`SAMPLEID: ${sampleID}`);
                         
                         gauge(meterLevel)
 
                     } else {
                         // if plots exist restyle plots
                         // restyle pie plot
-                        var $piePlot = document.getElementById('pie')
+                        var $piePlot = document.getElementById('pie');
                         Plotly.restyle($piePlot, 'values', [pieValues]);
                         Plotly.restyle($piePlot, 'labels', [pieLabels]);
                         Plotly.restyle($piePlot, 'hovertext', [pieDescriptions]);
 
                         // restyle bubble plot
-                        var $bubblePlot = document.getElementById('bubble')
+                        var $bubblePlot = document.getElementById('bubble');
                         var markerProps = {
                             color: allIDs,
                             size: allVals
@@ -127,18 +121,18 @@ function optionChanged(sample) {
                         Plotly.restyle($bubblePlot, 'marker', [markerProps]);
 
                         // update sample metadata
-                        Plotly.d3.select('#age').text(`AGE: ${age}`)
-                        Plotly.d3.select('#bbType').text(`BBTYPE: ${bbType}`)
-                        Plotly.d3.select('#ethnicity').text(`ETHNICITY: ${ethnicity}`)
-                        Plotly.d3.select('#gender').text(`GENDER: ${gender}`)
-                        Plotly.d3.select('#location').text(`LOCATION: ${location}`)
-                        Plotly.d3.select('#sampleID').text(`SAMPLEID: ${sampleID}`)
+                        Plotly.d3.select('#age').text(`AGE: ${age}`);
+                        Plotly.d3.select('#bbType').text(`BBTYPE: ${bbType}`);
+                        Plotly.d3.select('#ethnicity').text(`ETHNICITY: ${ethnicity}`);
+                        Plotly.d3.select('#gender').text(`GENDER: ${gender}`);
+                        Plotly.d3.select('#location').text(`LOCATION: ${location}`);
+                        Plotly.d3.select('#sampleID').text(`SAMPLEID: ${sampleID}`);
                         
                         // update washing frequency gauge
-                        var $freqGauge = document.getElementById('gauge')
+                        var $freqGauge = document.getElementById('gauge');
                         // Trig to calc meter point
                         var degrees = 180 - (meterLevel * 20),
-                            radius = .5;
+                            radius = 0.5;
                         var radians = degrees * Math.PI / 180;
                         var x = radius * Math.cos(radians);
                         var y = radius * Math.sin(radians);
@@ -214,15 +208,19 @@ function gauge(level){
             textposition:'inside',
             marker: {
                 colors:[ 'rgba(14, 127, 0, .5)',
-                            'rgba(14, 127, 0, .5)', 'rgba(14, 127, 0, .5)',
-                            'rgba(14, 127, 0, .5)', 'rgba(110, 154, 22, .5)',
-                            'rgba(170, 202, 42, .5)', 'rgba(202, 209, 95, .5)',
-                            'rgba(210, 206, 145, .5)', 'rgba(232, 226, 202, .5)',
-                            'rgba(255, 255, 255, 0)']
+                         'rgba(14, 127, 0, .5)', 
+                         'rgba(14, 127, 0, .5)',
+                         'rgba(14, 127, 0, .5)', 
+                         'rgba(110, 154, 22, .5)',
+                         'rgba(170, 202, 42, .5)', 
+                         'rgba(202, 209, 95, .5)',
+                         'rgba(210, 206, 145, .5)', 
+                         'rgba(232, 226, 202, .5)',
+                         'rgba(255, 255, 255, 0)']
                     },
             labels: ['8-9', '7-8', '6-7', '5-6', '4-5', '3-4', '2-3', '1-2', '0-1', ''],
             hoverinfo: 'label',
-            hole: .5,
+            hole: 0.5,
             type: 'pie',
             showlegend: false
         }
